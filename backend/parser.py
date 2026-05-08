@@ -1,8 +1,8 @@
 import os
 
-# -----------------------------
+
 # CONFIG
-# -----------------------------
+
 SUPPORTED_EXTENSIONS = [
     ".py",
     ".js",
@@ -29,9 +29,9 @@ IGNORE_FOLDERS = [
 ]
 
 
-# -----------------------------
+
 # LOAD FILES (FOR RAG)
-# -----------------------------
+
 def load_repository_files(repo_path):
     documents = []
 
@@ -67,9 +67,9 @@ def load_repository_files(repo_path):
     return documents
 
 
-# -----------------------------
-# FILE STRUCTURE (IMPORTANT FIX)
-# -----------------------------
+
+# FILE STRUCTURE
+
 def get_file_structure(repo_path):
     """
     Returns ONLY real file paths from repository.
