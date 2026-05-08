@@ -10,15 +10,15 @@ import time
 import requests
 from git import Repo
 
-# -----------------------------
+
 # CONFIG
-# -----------------------------
+
 REPO_DIR = "repositories"
 
 
-# -----------------------------
+
 # Validate GitHub URL
-# -----------------------------
+
 def validate_github_url(url):
     pattern = r"^https://github\.com/[\w.-]+/[\w.-]+/?$"
 
@@ -34,8 +34,8 @@ def validate_github_url(url):
     return True
 
 
-# -----------------------------
-# 🔥 STEP 2: FAST REPO CHECK (IMPORTANT FIX)
+
+#  FAST REPO CHECK (IMPORTANT FIX)
 # -----------------------------
 def check_repo_exists(repo_url):
     try:
@@ -56,9 +56,9 @@ def check_repo_exists(repo_url):
         return False
 
 
-# -----------------------------
-# SAFE DELETE (Windows fix)
-# -----------------------------
+
+# SAFE DELETE 
+
 def safe_remove(path):
     if os.path.exists(path):
         for _ in range(3):
@@ -71,31 +71,30 @@ def safe_remove(path):
         shutil.rmtree(path, ignore_errors=True)
 
 
-# -----------------------------
+
 # MAIN CLONE FUNCTION
-# -----------------------------
+
 def clone_repository(repo_url):
     try:
 
-        # Step 1: Validate URL
+       
         if not validate_github_url(repo_url):
             return None, "❌ Invalid GitHub repository URL."
 
-        # 🔥 Step 2: FAST PRE-CHECK (NO GIT CALL YET)
+     
         if not check_repo_exists(repo_url):
             return None, "❌ Repository does not exist or is private."
 
-        # Step 3: Ensure base folder exists
+        
         os.makedirs(REPO_DIR, exist_ok=True)
 
-        # Step 4: Unique folder per run
+      
         repo_id = str(uuid.uuid4())
         local_path = os.path.join(REPO_DIR, repo_id)
 
-        # Step 5: Clean old folder if exists
+      
         safe_remove(local_path)
 
-        # Step 6: Clone repository safely
         Repo.clone_from(repo_url, local_path)
 
         return local_path, None
