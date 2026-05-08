@@ -191,7 +191,7 @@ if st.session_state.qa_chain:
 
 
     # ASK RAG
-  if st.button("Ask"):
+     if st.button("Ask"):
 
         if not question:
             st.error("Please enter a question")
