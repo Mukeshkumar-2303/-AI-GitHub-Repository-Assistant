@@ -2,12 +2,12 @@ import streamlit as st
 import re
 from dotenv import load_dotenv
 
-from backend.github_handler import clone_repository
-from backend.parser import load_repository_files, get_file_structure
-from backend.chunker import chunk_documents
-from backend.embeddings import load_embedding_model
-from backend.vector_store import create_vector_store
-from backend.rag_pipeline import create_rag_chain
+from github_handler import clone_repository
+from parser import load_repository_files
+from chunker import chunk_documents
+from embeddings import load_embedding_model
+from vector_store import create_vector_store
+from rag_pipeline import create_rag_chain
 
 load_dotenv()
 
