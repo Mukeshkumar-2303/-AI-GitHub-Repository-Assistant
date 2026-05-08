@@ -2,18 +2,18 @@ import streamlit as st
 import re
 from dotenv import load_dotenv
 
-from github_handler import clone_repository
-from parser import load_repository_files
-from chunker import chunk_documents
-from embeddings import load_embedding_model
-from vector_store import create_vector_store
-from rag_pipeline import create_rag_chain
+from backend.github_handler import clone_repository
+from backend.parser import load_repository_files, get_file_structure
+from backend.chunker import chunk_documents
+from backend.embeddings import load_embedding_model
+from backend.vector_store import create_vector_store
+from backend.rag_pipeline import create_rag_chain
+
 
 load_dotenv()
 
-# -----------------------------
-# PAGE CONFIG
-# -----------------------------
+
+# PAGE CONFI
 st.set_page_config(
     page_title="GitHub Repository Assistant",
     layout="wide"
@@ -21,9 +21,9 @@ st.set_page_config(
 
 st.title("AI-Powered GitHub Repository Assistant")
 
-# -----------------------------
+
 # HERO INFO (UX GUIDE)
-# -----------------------------
+
 st.info("""
 💡 How this AI Works:
 
@@ -35,9 +35,8 @@ st.info("""
 6. Answers are grounded in real repository
 """)
 
-# -----------------------------
 # SIDEBAR RULES
-# -----------------------------
+
 st.sidebar.title("Repository Rules")
 
 st.sidebar.subheader("Supported Files")
@@ -61,7 +60,6 @@ st.sidebar.write("""
 - Large repos take time
 """)
 
-# -----------------------------
 # SESSION STATE INIT
 # -----------------------------
 for key in ["docs", "chunks", "qa_chain", "file_structure"]:
@@ -69,9 +67,9 @@ for key in ["docs", "chunks", "qa_chain", "file_structure"]:
         st.session_state[key] = None
 
 
-# -----------------------------
+
 # RESET SESSION
-# -----------------------------
+
 if st.button("Reset Session"):
     st.session_state.docs = None
     st.session_state.chunks = None
@@ -80,17 +78,17 @@ if st.button("Reset Session"):
     st.success("Session reset successfully.")
 
 
-# -----------------------------
+
 # INPUT
-# -----------------------------
+
 repo_url = st.text_input("Enter GitHub Repository URL")
 
 repo_path = None
 
 
-# -----------------------------
+
 # INGESTION PIPELINE
-# -----------------------------
+
 if st.button("Analyze Repository"):
 
     if not repo_url:
@@ -113,9 +111,8 @@ if st.button("Analyze Repository"):
 
     st.success("Repository cloned successfully.")
 
-    # -----------------------------
     # FILE STRUCTURE (CLEAN VIEW)
-    # -----------------------------
+
     st.session_state.file_structure = get_file_structure(repo_path)
 
     st.subheader("Repository Structure")
@@ -125,9 +122,8 @@ if st.button("Analyze Repository"):
         clean_path = clean_path.replace("\\", "/").strip("/")
         st.write(clean_path)
 
-    # -----------------------------
     # PARSE FILES
-    # -----------------------------
+   
     with st.spinner("Parsing repository files..."):
         docs = load_repository_files(repo_path)
 
@@ -140,9 +136,8 @@ if st.button("Analyze Repository"):
     st.write("📄 Total files found:", len(docs))
     st.write("📌 Sample file:", docs[0])
 
-    # -----------------------------
     # CHUNKING
-    # -----------------------------
+   
     with st.spinner("Chunking documents..."):
         chunks = chunk_documents(docs)
 
@@ -155,9 +150,9 @@ if st.button("Analyze Repository"):
     st.write("✂️ Total chunks created:", len(chunks))
     st.write("📌 Sample chunk:", chunks[0])
 
-    # -----------------------------
+    
     # EMBEDDINGS + VECTOR DB
-    # -----------------------------
+  
     with st.spinner("Generating embeddings..."):
         embeddings = load_embedding_model()
         vector_db = create_vector_store(chunks, embeddings)
@@ -168,9 +163,9 @@ if st.button("Analyze Repository"):
     st.session_state.qa_chain = qa_chain
 
 
-# -----------------------------
+
 # QA SECTION
-# -----------------------------
+
 if st.session_state.qa_chain:
 
     st.divider()
@@ -178,9 +173,9 @@ if st.session_state.qa_chain:
     question = st.text_input("Ask Questions About Repository")
 
 
-    # -----------------------------
+ 
     # DIRECT FILE STRUCTURE HANDLER
-    # -----------------------------
+   
     if question and any(x in question.lower() for x in [
         "file structure", "list files", "project structure"
     ]):
@@ -194,10 +189,9 @@ if st.session_state.qa_chain:
         st.stop()
 
 
-    # -----------------------------
+
     # ASK RAG
-    # -----------------------------
-    if st.button("Ask"):
+  if st.button("Ask"):
 
         if not question:
             st.error("Please enter a question")
