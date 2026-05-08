@@ -9,11 +9,9 @@ from backend.embeddings import load_embedding_model
 from backend.vector_store import create_vector_store
 from backend.rag_pipeline import create_rag_chain
 
-
 load_dotenv()
 
-
-# PAGE CONFI
+# PAGE CONFIG
 st.set_page_config(
     page_title="GitHub Repository Assistant",
     layout="wide"
@@ -21,9 +19,7 @@ st.set_page_config(
 
 st.title("AI-Powered GitHub Repository Assistant")
 
-
-# HERO INFO (UX GUIDE)
-
+# HERO INFO
 st.info("""
 💡 How this AI Works:
 
@@ -36,7 +32,6 @@ st.info("""
 """)
 
 # SIDEBAR RULES
-
 st.sidebar.title("Repository Rules")
 
 st.sidebar.subheader("Supported Files")
@@ -52,7 +47,7 @@ st.sidebar.write([
     "venv", "build", "dist"
 ])
 
-st.sidebar.subheader(" Requirements")
+st.sidebar.subheader("Requirements")
 st.sidebar.write("""
 - Public GitHub repo only
 - Must contain source code
@@ -61,15 +56,11 @@ st.sidebar.write("""
 """)
 
 # SESSION STATE INIT
-# -----------------------------
 for key in ["docs", "chunks", "qa_chain", "file_structure"]:
     if key not in st.session_state:
         st.session_state[key] = None
 
-
-
 # RESET SESSION
-
 if st.button("Reset Session"):
     st.session_state.docs = None
     st.session_state.chunks = None
@@ -77,18 +68,11 @@ if st.button("Reset Session"):
     st.session_state.file_structure = None
     st.success("Session reset successfully.")
 
-
-
 # INPUT
-
 repo_url = st.text_input("Enter GitHub Repository URL")
-
 repo_path = None
 
-
-
 # INGESTION PIPELINE
-
 if st.button("Analyze Repository"):
 
     if not repo_url:
@@ -111,19 +95,16 @@ if st.button("Analyze Repository"):
 
     st.success("Repository cloned successfully.")
 
-    # FILE STRUCTURE (CLEAN VIEW)
-
+    # FILE STRUCTURE
     st.session_state.file_structure = get_file_structure(repo_path)
 
     st.subheader("Repository Structure")
-
     for file in st.session_state.file_structure:
         clean_path = file.split("repositories")[-1]
         clean_path = clean_path.replace("\\", "/").strip("/")
         st.write(clean_path)
 
     # PARSE FILES
-   
     with st.spinner("Parsing repository files..."):
         docs = load_repository_files(repo_path)
 
@@ -137,7 +118,6 @@ if st.button("Analyze Repository"):
     st.write("📌 Sample file:", docs[0])
 
     # CHUNKING
-   
     with st.spinner("Chunking documents..."):
         chunks = chunk_documents(docs)
 
@@ -150,9 +130,7 @@ if st.button("Analyze Repository"):
     st.write("✂️ Total chunks created:", len(chunks))
     st.write("📌 Sample chunk:", chunks[0])
 
-    
     # EMBEDDINGS + VECTOR DB
-  
     with st.spinner("Generating embeddings..."):
         embeddings = load_embedding_model()
         vector_db = create_vector_store(chunks, embeddings)
@@ -162,43 +140,32 @@ if st.button("Analyze Repository"):
     qa_chain = create_rag_chain(vector_db)
     st.session_state.qa_chain = qa_chain
 
-
-
 # QA SECTION
-
 if st.session_state.qa_chain:
 
     st.divider()
 
     question = st.text_input("Ask Questions About Repository")
 
-
- 
-    # DIRECT FILE STRUCTURE HANDLER
-   
+    # FILE STRUCTURE QUICK HANDLER
     if question and any(x in question.lower() for x in [
         "file structure", "list files", "project structure"
     ]):
         st.subheader("File Structure")
-
         for file in st.session_state.file_structure:
             clean_path = file.split("repositories")[-1]
             clean_path = clean_path.replace("\\", "/").strip("/")
             st.write("📄", clean_path)
-
         st.stop()
 
-
-
     # ASK RAG
-     if st.button("Ask"):
+    if st.button("Ask"):
 
         if not question:
             st.error("Please enter a question")
             st.stop()
 
         with st.spinner("Generating answer..."):
-
             result = st.session_state.qa_chain.invoke(
                 {"query": question}
             )
@@ -209,7 +176,6 @@ if st.session_state.qa_chain:
 
         # SOURCES
         st.subheader("Sources")
-
         sources = set()
 
         for doc in result.get("source_documents", []):
