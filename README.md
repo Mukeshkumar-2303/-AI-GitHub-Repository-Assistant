@@ -1,144 +1,247 @@
-**AI-Powered GitHub Repository Knowledge Assistant
 
-An intelligent Retrieval-Augmented Generation (RAG) system that allows users to understand any GitHub repository using natural language queries.
 
-It analyzes real repository code (not just README) and provides grounded, evidence-based answers.
+---
 
-Features
-Input any public GitHub repository URL
-Auto-clone repository locally
-Extract and analyze real source code files
-Intelligent code chunking (function/class level)
-Embedding-based semantic search
-Vector database storage (FAISS / ChromaDB)
-LLM-powered Q&A (Groq / OpenAI / Ollama)
-Accurate file structure visualization
-Anti-hallucination system (answers only from code)
-Retrieval transparency with source tracking
-How It Works
+# **AI-Powered GitHub Repository Knowledge Assistant**
+
+An AI-powered GitHub repository analysis tool built with Streamlit, LangChain, and LLMs that allows users to understand any GitHub repository using natural language.
+
+This project converts GitHub repository code into embeddings and enables intelligent question answering using Retrieval-Augmented Generation (RAG).
+
+---
+
+![Screenshot](screenshot1.png)
+
+---
+
+## **AI GitHub Repository Assistant enables users to:**
+
+* Analyze any public GitHub repository using a URL
+* Understand repository structure and architecture
+* Ask natural language questions about code
+* Retrieve answers directly from source code
+* Explore file-level implementation details
+* Detect how components interact inside a project
+
+The system uses LangChain RAG pipelines with vector databases for accurate and context-aware responses.
+
+---
+
+![Screenshot](screenshot2.png)
+
+---
+
+## **Features**
+
+### AI-Powered Code Understanding
+
+* Converts GitHub repository code into embeddings
+* Retrieves relevant code chunks for every question
+* Generates accurate answers using LLM reasoning
+
+---
+
+### Repository Analysis
+
+* Automatically clones GitHub repositories
+* Parses source code files
+* Extracts project structure
+* Identifies modules and components
+
+---
+
+### File-Level Intelligence
+
+* Explains individual files and functions
+* Shows source file references for every answer
+* Supports deep code-level questioning
+
+---
+
+### Supported File Types
+
+* Python (.py)
+* JavaScript (.js)
+* TypeScript (.ts)
+* Java (.java)
+* Markdown (.md)
+* JSON (.json)
+* YAML (.yaml)
+* SQL (.sql)
+* HTML (.html)
+* CSS (.css)
+
+---
+
+### Safe Repository Processing
+
+Only safe read operations are performed.
+
+The system does NOT:
+
+* Modify repositories
+* Execute code from repositories
+* Store user credentials
+* Run destructive operations
+
+---
+
+## **Intelligent Retrieval (RAG System)**
+
+The system works using:
+
+* Code chunking (function/class level)
+* Embedding generation
+* Vector similarity search
+* Context-aware LLM responses
+
+This ensures answers are strictly based on actual repository code.
+
+---
+
+## **File Structure Awareness**
+
+The system provides:
+
+* Accurate file structure detection
+* Repository tree visualization
+* Clean file path representation
+* No hallucinated file names
+
+---
+
+## **Example Use Cases**
+
+* Understand unfamiliar GitHub repositories
+* Analyze open-source projects
+* Debug codebases quickly
+* Learn project architecture
+* Explore backend/frontend logic
+
+---
+
+## **Example Queries**
+
+### Repository Overview
+
+```text
+What is this project about?
+Explain this repository in simple terms.
+```
+
+### File Structure
+
+```text
+Show file structure of this repository
+List all files in this project
+```
+
+### Code Understanding
+
+```text
+How does this project work internally?
+Explain the backend logic
+```
+
+### Deep Analysis
+
+```text
+Which file handles embeddings?
+How is the vector database created?
+Where is GitHub cloning implemented?
+```
+
+---
+
+## **Tech Stack**
+
+### Frontend
+
+* Streamlit
+
+### Backend
+
+* Python
+
+### AI / LLM
+
+* LangChain
+* Groq / OpenAI / Ollama
+
+### Embeddings
+
+* HuggingFace Transformers
+* Sentence Transformers
+* CodeBERT
+
+### Vector Database
+
+* FAISS / ChromaDB
+
+### Repository Handling
+
+* GitPython
+
+---
+
+## **System Workflow**
+
+```text
 GitHub URL
    ↓
 Clone Repository
    ↓
-Parse Source Files
+Parse Code Files
    ↓
 Chunk Code (functions/classes)
    ↓
 Generate Embeddings
    ↓
-Store in Vector DB
+Store in Vector Database
    ↓
 User Question
    ↓
-Retrieve Relevant Chunks
+Retrieve Relevant Code
    ↓
-LLM Generates Answer (Grounded in Code)
-Supported File Types
-.py
-.js
-.ts
-.java
-.md
-.json
-.yaml
-.sql
-.html
-.css
-Ignored Files and Folders
-node_modules
-.git
-pycache
-venv
-build
-dist
-Requirements
-Repository must be a public GitHub repository
-Must contain source code files
-README alone is not sufficient
-Large repositories may take time to process
-Tech Stack
+LLM Generates Answer
+```
 
-Frontend:
+---
 
-Streamlit
+## **Limitations**
 
-Backend:
+* Large repositories may take time to process
+* Complex distributed systems may not be fully interpreted
+* Requires structured repositories for best performance
 
-Python
+---
 
-AI / LLM:
+## **Future Improvements**
 
-LangChain
-Groq / OpenAI / Ollama
+* GitHub Copilot-style UI
+* Clickable file explorer
+* Syntax-highlighted code viewer
+* Chat per file functionality
+* Architecture diagram generation
+* Multi-repository support
+* Real-time GitHub sync
 
-Embeddings:
+---
 
-HuggingFace Transformers
-Sentence Transformers
-CodeBERT (optional)
+## **Output Principle**
 
-Vector Database:
+The system strictly answers using retrieved repository context.
+If information is not found in the repository, it clearly states that.
 
-FAISS / ChromaDB
+---
 
-Repository Handling:
-
-GitPython
-Key Capabilities
-Repository Understanding
-Project explanation
-Architecture overview
-Tech stack detection
-Dependency analysis
-Code Analysis
-Function explanation
-Class-level breakdown
-API flow tracking
-Smart Q&A
-Context-aware answers
-File-specific queries
-Implementation tracing
-Example Queries
-General Understanding
-What is this project about?
-Explain this repository in simple terms.
-File Structure
-Show file structure of this repository
-List all files in this project
-Code Understanding
-How does the backend work?
-Explain the main logic of this project
-Deep Analysis
-Which file handles embeddings?
-Where is vector database created?
-How is repository cloned?
-Advanced Features (Future Scope)
-GitHub Copilot-style UI
-Clickable file explorer
-Code viewer with syntax highlighting
-Chat per file
-Architecture diagram generation
-Multi-repository support
-CI/CD integration
-Limitations
-Large repositories may take time to index
-Complex distributed systems may not be fully interpreted
-Requires well-structured repositories for best performance
-Output Principle
-
-The system answers ONLY using retrieved repository context.
-If information is not found in the repository, it explicitly states that.
-
-Author
+## **Author**
 
 Built as an AI-powered RAG system for:
 
-Code understanding
-Repository exploration
-Developer productivity
-Future Improvements
-Faster indexing with parallel processing
-Real-time GitHub sync
-Multi-language model routing
-UI-based file explorer tree
-Code execution sandbox integration
+* Code understanding
+* Repository exploration
+* Developer productivity
+
+---
+
